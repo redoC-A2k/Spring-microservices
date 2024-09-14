@@ -1,0 +1,17 @@
+spring:
+    config:
+        activate:
+            on-profile: "prod"
+
+build:
+    version: "1.0"
+
+cards: # prefix for configuration
+    message: "Welcome to EazyBank cards related prod APIs"
+    contactDetails:
+        name: "Rana Aishwarya - Product Owner"
+        email: "aishwarya@eazybank.com"
+    onCallSupport:
+        - (453) 392-1234
+        - (236) 203-1345
+     

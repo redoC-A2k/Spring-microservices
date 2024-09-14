@@ -1,0 +1,17 @@
+spring:
+    config:
+        activate:
+            on-profile: qa
+
+build:
+    version: "3.0"
+
+cards: # prefix for configuration
+    message: "Welcome to EazyBank cards related QA APIs"
+    contactDetails:
+        name: "Smitha Roy - QA Lead"
+        email: "smitha@eazybank.com"
+    onCallSupport:
+        - (666) 265-1234
+        - (666) 734-1345
+     

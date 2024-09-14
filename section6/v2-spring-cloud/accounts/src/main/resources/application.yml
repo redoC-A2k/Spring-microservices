@@ -1,0 +1,43 @@
+server:
+    port: 8080
+    # servlet:
+    #     context-path: /${spring.application.api-version}
+    
+spring:
+    datasource:
+        url: jdbc:h2:mem:testdb
+        driverClassName: org.h2.Driver
+        username: afshan
+        password: ''
+
+    h2:
+        console:
+            enabled: true
+    jpa:
+        database-platform: org.hibernate.dialect.H2Dialect
+        hibernate:
+            ddl-auto: update
+        show-sql: true
+
+    application:
+        name: accounts
+
+    profiles:
+        active: 
+            - prod
+    
+    config:
+        import: optional:configserver:http://localhost:8071  #optional -> start the microservice even if the configserver is down, configserver-> it will always be mentioned to indicate that this is url of config server even if the name of configserver was something else even then here configserver will be mentioned it is not releted to name of config server in any way, http://localhost:8071 -> url of the configserver 
+
+    rabbitmq:
+        host: localhost
+        port: 5672
+        username: guest
+        password: guest
+        
+
+management:
+    endpoints:
+        web:
+            exposure:
+                include: "*"
