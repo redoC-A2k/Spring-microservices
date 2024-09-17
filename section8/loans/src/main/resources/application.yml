@@ -24,8 +24,34 @@ spring:
         active: 
             - prod
 
+eureka:
+    instance:
+        prefer-ip-address: true # use ip address instead of hostname
+    client:
+        fetch-registry: true
+        register-with-eureka: true
+        service-url:
+            defaultZone: http://localhost:8070/eureka/
+
 management:
     endpoints:
         web:
             exposure:
                 include: "*"
+        jmx:
+            exposure:
+                include:
+                    - shutdown # to enable the shutdown
+    endpoint:
+        shutdown:
+            enabled: true # to enable the shutdown endpoint in actuator
+
+    info:
+        env:
+            enabled: true # to show the environment details in the info endpoint
+
+info:
+    app:
+        name: loans
+        description: Loans Microservice
+        version: 1.0.0

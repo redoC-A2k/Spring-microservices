@@ -3,6 +3,7 @@ package com.redoca2k.cards;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import com.redoca2k.cards.dto.CardsContactInfoDto;
@@ -24,6 +25,7 @@ import io.swagger.v3.oas.annotations.info.License;
 	license = @License(name = "Apache 2.0", url = "http://www.apache.org/licenses/LICENSE-2.0.html")), 
 	externalDocs = @ExternalDocumentation(description = "EazyBank Accounts microservice Wiki Documentation", url = "https://www.eazybank.com/wiki")
 )
+@EnableFeignClients
 public class CardsApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CardsApplication.class, args);

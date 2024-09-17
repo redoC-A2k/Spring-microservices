@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "EurekaserverApplication",
+            "request": "launch",
+            "mainClass": "com.redoca2k.eurekaserver.EurekaserverApplication",
+            "projectName": "eurekaserver"
+        },
+        {
+            "type": "java",
             "name": "ConfigserverApplication",
             "request": "launch",
             "mainClass": "com.redoca2k.configserver.ConfigserverApplication",
@@ -22,9 +29,7 @@
             "name": "AccountsApplication",
             "request": "launch",
             "mainClass": "com.redoca2k.accounts.AccountsApplication",
-            "args": [
-                // "--spring.profiles.active=prod"
-            ],
+            "args": [],
             "vmArgs": [
                 "-Dbuild.version=1.5"
             ],
@@ -35,9 +40,7 @@
             "name": "CardsApplication",
             "request": "launch",
             "mainClass": "com.redoca2k.cards.CardsApplication",
-            "args": [
-                // "--spring.profiles.active=prod"
-            ],
+            "args": [],
             "vmArgs": [
                 "-Dbuild.version=1.5"
             ],
