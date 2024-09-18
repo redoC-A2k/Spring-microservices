@@ -55,3 +55,9 @@ info:
         name: loans
         description: Loans Microservice
         version: 1.0.0
+
+logging:
+    level:
+        com:
+            redoca2k:
+                loans: DEBUG

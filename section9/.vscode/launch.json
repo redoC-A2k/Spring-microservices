@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "GatewayserverApplication",
+            "request": "launch",
+            "mainClass": "com.redoca2k.gatewayserver.GatewayserverApplication",
+            "projectName": ""
+        },
+        {
+            "type": "java",
             "name": "EurekaserverApplication",
             "request": "launch",
             "mainClass": "com.redoca2k.eurekaserver.EurekaserverApplication",

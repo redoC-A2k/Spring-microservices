@@ -1,10 +1,13 @@
 package com.redoca2k.accounts.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,7 +33,7 @@ import jakarta.validation.constraints.Pattern;
 @Validated
 public class CustomerController {
     private ICustomerService customerService;
-
+    private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
     public CustomerController(ICustomerService customerService) {
         this.customerService = customerService;
     }
@@ -44,8 +47,9 @@ public class CustomerController {
         @ApiResponse(responseCode = "500", description = "HTTP Status Internal Server Error", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
     })
     @GetMapping(path = "/fetchCustomerDetails", produces = "application/json")
-    public ResponseEntity<CustomerDetailsDto> fetchCustomerDetails(@RequestParam @Pattern(regexp="(^(0/91)?[7-9][0-9]{9})",message = "Mobile number must be 10 digits") String mobileNumber){
-        CustomerDetailsDto customerDetailsDto = customerService.fetchCustomerDetails(mobileNumber);
+    public ResponseEntity<CustomerDetailsDto> fetchCustomerDetails(@RequestHeader("eazybank-correlation-id") String correlationId, @RequestParam @Pattern(regexp="(^(0/91)?[7-9][0-9]{9})",message = "Mobile number must be 10 digits") String mobileNumber){
+        logger.debug("Accounts>CustomerContoller : eazybank-correlation-id found: {}", correlationId);
+        CustomerDetailsDto customerDetailsDto = customerService.fetchCustomerDetails(mobileNumber,correlationId);
         return ResponseEntity.status(HttpStatus.OK).body(customerDetailsDto);
     }
 }

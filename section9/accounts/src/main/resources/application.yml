@@ -41,16 +41,27 @@ management:
             exposure:
                 include: "*"
     
+        jmx:
+            exposure:
+                include:
+                    - shutdown # to enable the shutdown
     info:
         env:
             enabled: true # to show the environment details in the info endpoint
 
-endpoints:
-    shutdown:
-        enabled: true
+    endpoint:
+        shutdown:
+            enabled: true # to enable the shutdown endpoint in actuator
+
 
 info:
     app:
         name: accounts
         description: Accounts Microservice
         version: 1.0.0
+
+logging:
+    level:
+        com:
+            redoca2k:
+                accounts: DEBUG
