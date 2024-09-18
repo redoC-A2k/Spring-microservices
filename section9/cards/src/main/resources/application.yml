@@ -42,9 +42,19 @@ management:
             exposure:
                 include:
                     - shutdown # to enable the shutdown
+    health:
+        readinessstate:
+            enabled: true
+        livenessstate:
+            enabled: true
+            
     endpoint:
         shutdown:
             enabled: true # to enable the shutdown endpoint in actuator
+        health:
+            probes:
+                enabled: true
+        
     info:
         env:
             enabled: true # to show the environment details in the info endpoint
