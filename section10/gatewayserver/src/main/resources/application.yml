@@ -1,0 +1,93 @@
+# This property will be maintained in config server
+# server:
+#     port: 8080
+#     # servlet:
+#     #     context-path: /${spring.application.api-version}
+    
+spring:
+    # no need to connect to database
+    # datasource:
+    #     url: jdbc:mysql://localhost:3306/accountsdb
+    #     username: root
+    #     password: root
+
+    # jpa:
+    #     show-sql: true
+    
+    # sql:
+    #     init:
+    #         mode: always
+
+    application:
+        name: gatewayserver
+
+    # Same for all default, prod, qa
+    # profiles:
+    #     active: 
+    #         - prod
+    
+    config:
+        import: optional:configserver:http://localhost:8071  #optional -> start the microservice even if the configserver is down, configserver-> it will always be mentioned to indicate that this is url of config server even if the name of configserver was something else even then here configserver will be mentioned it is not releted to name of config server in any way, http://localhost:8071 -> url of the configserver 
+
+    cloud:
+        gateway:
+            discovery:
+                locator: 
+                    # enabled: true # to enable the discovery of services using eureka by gateway server and use the instances return by eureka server to forward the traffic to the respective services
+                    enabled: false # we don't want to use eureka to discover the services, we will use the routes defined in the gatewayServerApplication.java
+                    lower-case-service-id: true # to convert the service id to lower case
+
+# Eureka config will be fetched from config server
+# eureka:
+#     instance:
+#         prefer-ip-address: true # use ip address instead of hostname
+#     client:
+#         fetch-registry: true
+#         register-with-eureka: true
+#         service-url:
+#             defaultZone: http://localhost:8070/eureka/
+
+management:
+    endpoints:
+        web:
+            exposure:
+                include: "*"
+                
+    # No need to enable actuator related shutdown endpoint
+    #      jmx:
+    #          exposure:
+    #              include:
+    #                  - shutdown # to enable the shutdown
+    # endpoint:
+    #     shutdown:
+    #         enabled
+
+    endpoint:
+        gateway:
+            enabled: true
+
+    info:
+        env:
+            enabled: true # to show the environment details in the info endpoint
+            
+info:
+    app:
+        name: gatewayserver
+        description: Eazy bank gateway server application
+        version: 1.0.0
+
+logging:
+    level:
+        com:
+            redoca2k:
+                gatewayserver: DEBUG # to enable the debug logs for gateway server
+                # by default logger.debug won't work if we do not write the above line in application.yml
+
+resilience4j.circuitbreaker:
+    configs:
+        default:
+            slidingWindowSize: 10 # number of calls to consider before deciding the state of the circuit
+            permittedNumberOfCallsInHalfOpenState: 2 # number of calls to allow in half open state
+            failure-rate-threshold: 50 # percentage of failure rate to consider the circuit as open
+            waitDurationInOpenState: 10000 # i.e 10s # time to wait in open state before moving to half open state (in milliseconds)
+      
