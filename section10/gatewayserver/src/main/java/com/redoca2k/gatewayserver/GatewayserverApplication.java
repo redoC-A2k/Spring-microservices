@@ -43,8 +43,10 @@ public class GatewayserverApplication {
 						.filters(f -> f.rewritePath("/eazybank/loans/(?<segment>.*)", "/${segment}")
 								.addResponseHeader("X-Response-Time", LocalDateTime.now().toString())
 								.retry(config -> config.setRetries(3).setMethods(HttpMethod.GET)
-										.setBackoff(Duration.ofMillis(100),Duration.ofMillis(1000), 2, true))) // factor means multiplier
-						.uri("lb://LOANS"))
+									// .setExceptions(null)	same as retry-exceptions in application.yml in accounts.yml
+									// similarly other methods are also available like setStatuses i.e retry only in when we get this status
+									.setBackoff(Duration.ofMillis(100),Duration.ofMillis(1000), 2, true))) // factor means multiplier
+								.uri("lb://LOANS"))
 				.route(p -> p // p indicates the path
 						.path("/eazybank/cards/**")
 						.filters(f -> f.rewritePath("/eazybank/cards/(?<segment>.*)", "/${segment}")
