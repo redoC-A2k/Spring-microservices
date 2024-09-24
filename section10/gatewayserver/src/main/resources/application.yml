@@ -36,6 +36,10 @@ spring:
                     # enabled: true # to enable the discovery of services using eureka by gateway server and use the instances return by eureka server to forward the traffic to the respective services
                     enabled: false # we don't want to use eureka to discover the services, we will use the routes defined in the gatewayServerApplication.java
                     lower-case-service-id: true # to convert the service id to lower case
+            httpclient:
+                connect-timeout: 1000 # time to get the connection of the microservice from eureka
+                response-timeout: 4s # time to get the response from the microservice
+                
 
 # Eureka config will be fetched from config server
 # eureka:

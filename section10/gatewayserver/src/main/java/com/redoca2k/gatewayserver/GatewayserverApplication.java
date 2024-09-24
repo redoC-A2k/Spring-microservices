@@ -4,9 +4,18 @@ import java.time.LocalDateTime;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.circuitbreaker.resilience4j.ReactiveResilience4JCircuitBreakerFactory;
+import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigBuilder;
+import org.springframework.cloud.client.circuitbreaker.Customizer;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
+
+import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
+import io.github.resilience4j.timelimiter.TimeLimiterConfig;
+
+import java.time.Duration;
 
 @SpringBootApplication
 public class GatewayserverApplication {
@@ -32,7 +41,9 @@ public class GatewayserverApplication {
 				.route(p -> p // p indicates the path
 						.path("/eazybank/loans/**")
 						.filters(f -> f.rewritePath("/eazybank/loans/(?<segment>.*)", "/${segment}")
-								.addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
+								.addResponseHeader("X-Response-Time", LocalDateTime.now().toString())
+								.retry(config -> config.setRetries(3).setMethods(HttpMethod.GET)
+										.setBackoff(Duration.ofMillis(100),Duration.ofMillis(1000), 2, true))) // factor means multiplier
 						.uri("lb://LOANS"))
 				.route(p -> p // p indicates the path
 						.path("/eazybank/cards/**")
@@ -40,5 +51,16 @@ public class GatewayserverApplication {
 								.addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
 						.uri("lb://CARDS"))
 				.build();
+	}
+
+	// Since in case of retry for account build-info we have configured wait duration starting from 500, and miltiplier 2 so the api invocation along with retry consideration will take more than 1 second of time 
+	// 1 second is the default time for circuit breaker , so meanwhile accounts will be retrying the circuit breaker will break the connection and return fallback uri
+	// so we have to increase the time for circuit breaker to 4 seconds
+	// which is done by below bean
+	@Bean
+	public Customizer<ReactiveResilience4JCircuitBreakerFactory> defaultCustomizer (){
+		return factory -> factory.configureDefault(id -> new Resilience4JConfigBuilder(id)
+																.circuitBreakerConfig(CircuitBreakerConfig.ofDefaults())
+																.timeLimiterConfig(TimeLimiterConfig.custom().timeoutDuration(Duration.ofSeconds(4)).build()).build());	
 	}
 }

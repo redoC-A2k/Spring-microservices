@@ -1,5 +1,8 @@
 package com.redoca2k.accounts.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -23,6 +26,7 @@ import com.redoca2k.accounts.dto.ErrorResponseDto;
 import com.redoca2k.accounts.dto.ResponseDto;
 import com.redoca2k.accounts.service.IAccountsService;
 
+import io.github.resilience4j.retry.annotation.Retry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -42,7 +46,8 @@ import jakarta.validation.constraints.Pattern;
 public class AccountsController {
     
     private IAccountsService accountsService; // constructor injection
-    
+    private static final Logger logger = LoggerFactory.getLogger(AccountsController.class);
+
     public AccountsController(IAccountsService accountsService) {
         this.accountsService = accountsService;
     }
@@ -122,6 +127,7 @@ public class AccountsController {
         }
     }
 
+    @Retry(name = "getBuildVersion", fallbackMethod = "getBuildVersionFallback")
     @Operation(
         summary = "Get Build Version",
         description = "This api is used to get the build version of the application"
@@ -132,7 +138,14 @@ public class AccountsController {
     })
     @GetMapping("build-info")
     public ResponseEntity<String> getBuildVersion() {
-        return ResponseEntity.status(HttpStatus.OK).body(buildVersion);
+        logger.debug("getBuildVersion method invoked");
+        throw new NullPointerException();
+        // return ResponseEntity.status(HttpStatus.OK).body(buildVersion);
+    }
+
+    public ResponseEntity<String> getBuildVersionFallback(Throwable t) {
+        logger.debug("getBuildVersionFallback method invoked");
+        return ResponseEntity.status(HttpStatus.OK).body("Build version is not available");
     }
 
     @Operation(

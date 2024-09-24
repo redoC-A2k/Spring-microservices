@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.redoca2k.accounts.dto.LoansDto;
 
-@FeignClient(name = "loans")
+@FeignClient(name = "loans",fallback = LoanFallback.class)
 public interface LoansFeignClient {
 
     @GetMapping(path = "/api/fetch", produces = "application/json")
