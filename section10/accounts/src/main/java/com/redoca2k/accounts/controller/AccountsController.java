@@ -1,5 +1,7 @@
 package com.redoca2k.accounts.controller;
 
+import java.util.concurrent.TimeoutException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -137,9 +139,10 @@ public class AccountsController {
         @ApiResponse(responseCode = "500", description = "Http Status Internal Server Error", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
     })
     @GetMapping("build-info")
-    public ResponseEntity<String> getBuildVersion() {
+    public ResponseEntity<String> getBuildVersion() throws TimeoutException{
         logger.debug("getBuildVersion method invoked");
-        throw new NullPointerException();
+        // throw new NullPointerException();
+        throw new TimeoutException();
         // return ResponseEntity.status(HttpStatus.OK).body(buildVersion);
     }
 

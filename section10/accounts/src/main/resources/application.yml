@@ -95,5 +95,7 @@ resilience4j.retry:
             waitDuration: 500
             enable-exponential-backoff: true
             exponential-backoff-multiplier: 2
-            ignore-exceptions:
-                - java.lang.NullPointerException # ignore nullpointer exception i.e do not retry if we get null pointer exceptions
+            # ignore-exceptions:
+            #     - java.lang.NullPointerException # ignore nullpointer exception i.e do not retry if we get null pointer exceptions
+            retry-exceptions: # if we define here retry exceptions then we do not need to define ignore-exceptions
+                - java.util.concurrent.TimeoutException
