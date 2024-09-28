@@ -160,11 +160,15 @@ public class AccountsController {
         @ApiResponse(responseCode = "200", description = "Http Status OK"),
         @ApiResponse(responseCode = "500", description = "Http Status Internal Server Error", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
     })
-    @RateLimiter(name = "getJavaVersion")
+    @RateLimiter(name = "getJavaVersion",fallbackMethod = "getJavaVersionFallback")
     @GetMapping("java-version")
     public ResponseEntity<String> getJavaVersion() {
         return ResponseEntity.status(HttpStatus.OK).body(environment.getProperty("JAVA_HOME"));
     }
+    public ResponseEntity<String> getJavaVersionFallback(Throwable throwable) {
+        return ResponseEntity.status(HttpStatus.OK).body("Java 17");
+    }
+
 
     @Operation(
         summary = "Get Contact info",
