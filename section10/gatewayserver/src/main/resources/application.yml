@@ -39,7 +39,12 @@ spring:
             httpclient:
                 connect-timeout: 1000 # time to get the connection of the microservice from eureka
                 response-timeout: 4s # time to get the response from the microservice
-                
+    data:
+        redis:
+            connect-timeout: 2s
+            host: localhost
+            port: 6379
+            timeout: 1s
 
 # Eureka config will be fetched from config server
 # eureka:
