@@ -1,0 +1,29 @@
+apiVersion: 1
+
+deleteDatasources: # delete any existing prometheus or loki datasource
+  - name: Prometheus
+  - name: Loki 
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    uid: prometheus
+    url: http://prometheus:9090
+    access: proxy
+    orgId: 1
+    basicAuth: false
+    isDefault: false
+    version: 1
+    editable: true
+    jsonData:
+      httpMethod: GET
+    
+  - name: Loki
+    type: loki
+    access: proxy
+    orgId: 1
+    url: http://gateway:3100
+    jsonData:
+        httpHeaderName1: "X-Scope-OrgID"
+    secureJsonData:
+        httpHeaderValue1: "tenant1"

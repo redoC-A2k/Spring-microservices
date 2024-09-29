@@ -79,6 +79,17 @@ services:
             file: common-config.yml
             service: network-deploy-service
 
+    prometheus: # prometheus service added by me
+        image: prom/prometheus:v2.54.1
+        container_name: prometheus
+        ports:
+            - "9090:9090"
+        volumes:
+            - ../observability/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+        extends:
+            file: common-config.yml
+            service: network-deploy-service
+
     grafana:
         image: grafana/grafana:latest
         environment:
@@ -91,20 +102,9 @@ services:
             - sh
             - -euc
             - |
-                mkdir -p /etc/grafana/provisioning/datasources
-                cat <<EOF > /etc/grafana/provisioning/datasources/ds.yaml
-                apiVersion: 1
-                datasources:
-                    - name: Loki
-                      type: loki
-                      access: proxy
-                      url: http://gateway:3100
-                      jsonData:
-                          httpHeaderName1: "X-Scope-OrgID"
-                      secureJsonData:
-                          httpHeaderValue1: "tenant1"
-                EOF
-                /run.sh
+              /run.sh
+        volumes:
+            - ../observability/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
         ports:
             - "3000:3000"
         healthcheck:
@@ -244,7 +244,7 @@ services:
 
             
     configserver:
-        image: "afshan2001/configserver:s10"
+        image: "afshan2001/configserver:s11"
         container_name: configserver-ms
         ports:
             - "8071:8071"
@@ -261,7 +261,7 @@ services:
             GITHUB_ACCESS_TOKEN: ${GITHUB_ACCESS_TOKEN}
 
     eurekaserver:
-        image: "afshan2001/eurekaserver:s10"
+        image: "afshan2001/eurekaserver:s11"
         container_name: eurekaserver-ms
         ports:
             - "8070:8070"
@@ -278,7 +278,7 @@ services:
             - SPRING_APPLICATION_NAME=eurekaserver # with this name we have file in config server
 
     accounts:
-        image: "afshan2001/accounts:s10"
+        image: "afshan2001/accounts:s11"
         container_name: accounts-ms
         ports:
             - "8080:8080"
@@ -299,7 +299,7 @@ services:
             - SPRING_DATASOURCE_URL=jdbc:mysql://accountsdb:3306/accountsdb
     
     loans:
-        image: "afshan2001/loans:s10"
+        image: "afshan2001/loans:s11"
         container_name: loans-ms
         ports:
             - "8090:8090"
@@ -320,7 +320,7 @@ services:
             - SPRING_DATASOURCE_URL=jdbc:mysql://loansdb:3306/loansdb
 
     cards:
-        image: "afshan2001/cards:s10"
+        image: "afshan2001/cards:s11"
         container_name: cards-ms
         ports:
             - "9000:9000"
@@ -341,7 +341,7 @@ services:
             - SPRING_DATASOURCE_URL=jdbc:mysql://cardsdb:3306/cardsdb
     
     gatewayserver:
-        image: "afshan2001/gatewayserver:s10"
+        image: "afshan2001/gatewayserver:s11"
         container_name: gatewayserver-ms
         ports:
             - "8072:8072"

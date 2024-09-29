@@ -67,6 +67,10 @@ management:
             probes:
                 enabled: true
 
+    metrics:
+        tags:
+            application: ${spring.application.name} # we are telling micrometer and prometheous to group all metrics related to the accounts under application name (which is accounts)
+            
 
 info:
     app:

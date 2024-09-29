@@ -59,6 +59,9 @@ management:
         env:
             enabled: true # to show the environment details in the info endpoint
     
+    metrics:
+        tags:
+            application: ${spring.application.name} # we are telling micrometer and prometheous to group all metrics related to the accounts under application name (which is accounts)
 
 
 # endpoints:
