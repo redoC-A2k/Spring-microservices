@@ -24,6 +24,12 @@ services:
             resources:
                 limits:
                     memory: 700M
+        volumes:
+            - ../observability/opentelemetry-javaagent.jar:/lib/opentelemetry-javaagent-1.33.5.jar # download from here - https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases and see https://opentelemetry.io/docs/zero-code/java/agent/getting-started/
+        environment:
+            JAVA_TOOL_OPTIONS: -javaagent:/lib/opentelemetry-javaagent-1.33.5.jar # giving the location of opentelemetry jar
+            OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4317 # opentelemetry will send all the traces to temp server
+            OTEL_METRICS_EXPORTER: none # we don't want to use opentelemetry for metrics, since we use prometheus
 
     microservice-configserver-config:
         extends:
