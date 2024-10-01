@@ -42,4 +42,11 @@ management:
     
 encrypt:
     key: LFDORF9WHFRIOWEU7
-    
+
+logging:
+    level:
+        com:
+            redoca2k:
+                configserver: DEBUG
+    pattern:
+        level: "%5p [${spring.application.name}, %X{trace_id}, %X{span_id}]"

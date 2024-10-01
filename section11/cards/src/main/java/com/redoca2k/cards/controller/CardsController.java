@@ -34,7 +34,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
 
 @Tag(
     name = "CRUD REST APIs for Cards in EazyBank",
@@ -86,8 +85,10 @@ public class CardsController {
     })
     @GetMapping("/fetch")
     public ResponseEntity<CardsDto> fetchCardDetails(@RequestHeader("eazybank-correlation-id") String correlationId, @RequestParam @Pattern(regexp="(^[0-9]{10})$",message = "Mobile number must be 10 digit number") String mobileNumber) {
+        // logger.debug("CardsController : eazybank-correlation-id found: {}", correlationId);
+        logger.debug("fetchCardDetails method start");
         CardsDto cardsDto = iCardsService.fetchCard(mobileNumber);
-        logger.debug("CardsController : eazybank-correlation-id found: {}", correlationId);
+        logger.debug("fetchCardDetails method end");
         return ResponseEntity.status(HttpStatus.OK).body(cardsDto);
     }
 

@@ -91,6 +91,8 @@ logging:
             redoca2k:
                 gatewayserver: DEBUG # to enable the debug logs for gateway server
                 # by default logger.debug won't work if we do not write the above line in application.yml
+    pattern:
+        level: "%5p [${spring.application.name}, %X{trace_id}, %X{span_id}]"
 
 resilience4j.circuitbreaker:
     configs:

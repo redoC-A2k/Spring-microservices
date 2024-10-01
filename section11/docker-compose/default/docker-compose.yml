@@ -90,6 +90,19 @@ services:
             file: common-config.yml
             service: network-deploy-service
 
+    tempo:
+        image: grafana/tempo:2.4.2
+        container_name: tempo
+        command: -config.file=/etc/tempo/tempo-config.yml
+        ports:
+            - "3110:3100"
+            - "4317:4317"
+        volumes:
+            - ../observability/tempo/tempo.yml:/etc/tempo/tempo-config.yml
+        extends:
+            file: common-config.yml
+            service: network-deploy-service
+            
     grafana:
         image: grafana/grafana:latest
         environment:
@@ -250,7 +263,7 @@ services:
             - "8071:8071"
         healthcheck:
             test: "curl --fail --silent http://localhost:8071/actuator/health/readiness | grep UP || (echo \"Bash failed to start config server\" && exit 1)"
-            interval: 15s
+            interval: 25s
             timeout: 5s
             retries: 5
             start_period: 30s
@@ -259,6 +272,7 @@ services:
             service: microservice-base-config
         environment:
             GITHUB_ACCESS_TOKEN: ${GITHUB_ACCESS_TOKEN}
+            OTEL_SERVICE_NAME: configserver
 
     eurekaserver:
         image: "afshan2001/eurekaserver:s11"
@@ -267,7 +281,7 @@ services:
             - "8070:8070"
         healthcheck:
             test: "curl --fail --silent http://localhost:8070/actuator/health/readiness | grep UP || (echo \"Bash failed to start config server\" && exit 1)"
-            interval: 15s
+            interval: 25s
             timeout: 5s
             retries: 5
             start_period: 30s
@@ -276,6 +290,7 @@ services:
             service: microservice-configserver-config
         environment:
             - SPRING_APPLICATION_NAME=eurekaserver # with this name we have file in config server
+            - OTEL_SERVICE_NAME=eurekaserver
 
     accounts:
         image: "afshan2001/accounts:s11"
@@ -284,7 +299,7 @@ services:
             - "8080:8080"
         healthcheck:
             test: "curl --fail --silent http://localhost:8080/actuator/health/readiness | grep UP || (echo \"Bash failed to start config server\" && exit 1)"
-            interval: 15s
+            interval: 25s
             timeout: 5s
             retries: 5
             start_period: 30s        
@@ -297,6 +312,7 @@ services:
         environment:
             - SPRING_APPLICATION_NAME=accounts
             - SPRING_DATASOURCE_URL=jdbc:mysql://accountsdb:3306/accountsdb
+            - OTEL_SERVICE_NAME=accounts
     
     loans:
         image: "afshan2001/loans:s11"
@@ -308,7 +324,7 @@ services:
                 condition: service_healthy
         healthcheck:
             test: "curl --fail --silent http://localhost:8090/actuator/health/readiness | grep UP || (echo \"Bash failed to start config server\" && exit 1)"
-            interval: 15s
+            interval: 25s
             timeout: 5s
             retries: 5
             start_period: 30s
@@ -318,6 +334,7 @@ services:
         environment:
             - SPRING_APPLICATION_NAME=loans
             - SPRING_DATASOURCE_URL=jdbc:mysql://loansdb:3306/loansdb
+            - OTEL_SERVICE_NAME=loans
 
     cards:
         image: "afshan2001/cards:s11"
@@ -326,7 +343,7 @@ services:
             - "9000:9000"
         healthcheck:
             test: "curl --fail --silent http://localhost:9000/actuator/health/readiness | grep UP || (echo \"Bash failed to start config server\" && exit 1)"
-            interval: 15s
+            interval: 25s
             timeout: 5s
             retries: 5
             start_period: 30s
@@ -339,6 +356,7 @@ services:
         environment:
             - SPRING_APPLICATION_NAME=cards
             - SPRING_DATASOURCE_URL=jdbc:mysql://cardsdb:3306/cardsdb
+            - OTEL_SERVICE_NAME=cards
     
     gatewayserver:
         image: "afshan2001/gatewayserver:s11"
@@ -363,7 +381,7 @@ services:
             - SPRING_DATA_REDIS_HOST=redis
             - SPRING_DATA_REDIS_PORT=6379
             - SPRING_DATA_REDIS_TIMEOUT=1s
-
+            - OTEL_SERVICE_NAME=gatewayserver
 
  
 networks:

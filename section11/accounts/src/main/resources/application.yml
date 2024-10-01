@@ -82,7 +82,10 @@ logging:
     level:
         com:
             redoca2k:
-                accounts: DEBUG
+                accounts: DEBUG # to enable the logging for correlationID
+    pattern:
+        level: "%5p [${spring.application.name}, %X{trace_id}, %X{span_id}]"
+    
 
 resilience4j.circuitbreaker:
     configs:
