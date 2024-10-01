@@ -1,0 +1,52 @@
+server:
+    port: 8071
+
+spring:
+    application:
+        name: configserver
+    profiles:
+        # active: native # When we are trying to use a classpath to store all our configuration , we need to make sure we are activating this profile
+        active: git # use native profile when dealing with file way or classpath way 
+    cloud:
+        config:
+            server:
+                # native:
+                #     searchLocations: classpath:/config # classpath way
+                    # searchLocations: file:///home/afshan/Documents/Projects/Java/Java-Projects/configserver/src/main/resources/config # file way
+                git:
+                    uri: https://github.com/redoC-A2k/eazybytes-config.git
+                    default-label: master # default branch name
+                    timeout: 5 # wait for 5 seconds , and if it is not able to connect to the git repository , it will throw an exception
+                    clone-on-start: true # clone the repository on start of config server (if false the repository is cloned on first request to config server)
+                    force-pull: true # force pull the repository on start of config server 
+                    username: redoC-A2k
+                    # password: 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
+                    password: ${GITHUB_ACCESS_TOKEN}
+
+management:
+    endpoints: # plural
+        web:
+            exposure:
+                include: "*"
+
+    health:
+        readinessstate:
+            enabled: true
+        livenessstate:
+            enabled: true 
+    
+    endpoint:
+        health:
+            probes:
+                enabled: true 
+    
+encrypt:
+    key: LFDORF9WHFRIOWEU7
+
+logging:
+    level:
+        com:
+            redoca2k:
+                configserver: DEBUG
+    pattern:
+        level: "%5p [${spring.application.name}, %X{trace_id}, %X{span_id}]"

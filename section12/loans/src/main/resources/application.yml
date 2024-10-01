@@ -1,0 +1,79 @@
+server:
+    port: 8090
+
+spring:
+    datasource:
+        url: jdbc:mysql://localhost:3307/loansdb
+        username: root
+        password: root
+    jpa:
+        show-sql: true 
+    
+    sql:
+        init:
+            mode: always
+
+    application:
+        name: loans
+
+    config:
+        import:
+            - optional:configserver:http://localhost:8071
+
+    profiles:
+        active: 
+            - prod
+
+eureka:
+    instance:
+        prefer-ip-address: true # use ip address instead of hostname
+    client:
+        fetch-registry: true
+        register-with-eureka: true
+        service-url:
+            defaultZone: http://localhost:8070/eureka/
+
+management:
+    endpoints:
+        web:
+            exposure:
+                include: "*"
+        jmx:
+            exposure:
+                include:
+                    - shutdown # to enable the shutdown
+    health:
+        readinessstate:
+            enabled: true
+        livenessstate:
+            enabled: true
+
+    endpoint:
+        shutdown:
+            enabled: true # to enable the shutdown endpoint in actuator
+        
+        health:
+            probes:
+                enabled: true
+
+    info:
+        env:
+            enabled: true # to show the environment details in the info endpoint
+
+    metrics:
+        tags:
+            application: ${spring.application.name} # we are telling micrometer and prometheous to group all metrics related to the accounts under application name (which is accounts)
+
+info:
+    app:
+        name: loans
+        description: Loans Microservice
+        version: 1.0.0
+
+logging:
+    level:
+        com:
+            redoca2k:
+                loans: DEBUG
+    pattern:
+        level: "%5p [${spring.application.name}, %X{trace_id}, %X{span_id}]"

@@ -1,0 +1,74 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "GatewayserverApplication",
+            "request": "launch",
+            "mainClass": "com.redoca2k.gatewayserver.GatewayserverApplication",
+            "projectName": ""
+        },
+        {
+            "type": "java",
+            "name": "EurekaserverApplication",
+            "request": "launch",
+            "mainClass": "com.redoca2k.eurekaserver.EurekaserverApplication",
+            "projectName": "eurekaserver"
+        },
+        {
+            "type": "java",
+            "name": "ConfigserverApplication",
+            "request": "launch",
+            "mainClass": "com.redoca2k.configserver.ConfigserverApplication",
+            "projectName": ""
+        },
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "AccountsApplication",
+            "request": "launch",
+            "mainClass": "com.redoca2k.accounts.AccountsApplication",
+            "args": [],
+            "vmArgs": [
+                "-Dbuild.version=1.5"
+            ],
+            "projectName": "accounts"
+        },
+        {
+            "type": "java",
+            "name": "CardsApplication",
+            "request": "launch",
+            "mainClass": "com.redoca2k.cards.CardsApplication",
+            "args": [],
+            "vmArgs": [
+                "-Dbuild.version=1.5"
+            ],
+            "projectName": "cards"
+        },
+        {
+            "type": "java",
+            "name": "LoansApplication",
+            "request": "launch",
+            "mainClass": "com.redoca2k.loans.LoansApplication",
+            "projectName": "loans"
+        },
+        {
+            "type": "java",
+            "name": "ConfigserverApplication",
+            "request": "launch",
+            "mainClass": "com.redoca2k.configserver.ConfigserverApplication",
+            "projectName": "configserver",
+            "env": {
+                "GITHUB_ACCESS_TOKEN": "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"
+            }
+        }
+    ]
+}

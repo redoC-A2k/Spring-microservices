@@ -1,0 +1,31 @@
+spring:
+    application:
+        name: eurekaserver   # name of the microservice and since we named it as eurekaserver , this application will search for eurekaserveer.yml properties from configserver
+
+    config:
+        import: optional:configserver:http://localhost:8071  #optional -> start the microservice even if the configserver is down, configserver-> it will always be mentioned to indicate that this is url of config server even if the name of configserver was something else even then here configserver will be mentioned it is not releted to name of config server in any way, http://localhost:8071 -> url of the configserver 
+        
+management:
+    endpoints: # plural
+        web:
+            exposure:
+                include: "*"
+
+    health:
+        readinessstate:
+            enabled: true
+        livenessstate:
+            enabled: true 
+    
+    endpoint:
+        health:
+            probes:
+                enabled: true 
+
+logging:
+    level:
+        com:
+            redoca2k:
+                eurekaserver: DEBUG
+    pattern:
+        level: "%5p [${spring.application.name}, %X{trace_id}, %X{span_id}]"

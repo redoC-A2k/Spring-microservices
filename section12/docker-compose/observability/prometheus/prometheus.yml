@@ -1,0 +1,34 @@
+global:
+    scrape_interval: 5s # scrapes data every 5s from microservices
+    evaluation_interval: 5s # evaluate graph based on data every 5s
+
+scrape_configs:
+    - job_name: 'accounts'
+      metrics_path: '/actuator/prometheus'
+      static_configs:
+          - targets: ['accounts:8080'] # here we are not mentioning localhost , since we will use docker hence we are mentioning service name accounts which corresponds to accounts docker container
+
+    - job_name: 'loans'
+      metrics_path: '/actuator/prometheus'
+      static_configs:
+          - targets: ['loans:8090']
+
+    - job_name: 'cards'
+      metrics_path: '/actuator/prometheus'
+      static_configs:
+          - targets: ['cards:9000']
+
+    - job_name: 'gatewayserver'
+      metrics_path: '/actuator/prometheus'
+      static_configs:
+          - targets: ['gatewayserver:8072']
+    
+    - job_name: 'eurekaserver'
+      metrics_path: '/actuator/prometheus'
+      static_configs:
+          - targets: ['eurekaserver:8070']
+    
+    - job_name: 'configserver'
+      metrics_path: '/actuator/prometheus'
+      static_configs:
+          - targets: ['configserver:8071']
