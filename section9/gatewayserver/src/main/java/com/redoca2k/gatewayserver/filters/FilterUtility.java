@@ -2,9 +2,11 @@ package com.redoca2k.gatewayserver.filters;
 
 import java.util.List;
 
+import org.hibernate.validator.constraints.br.CNPJ;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.servlet.function.ServerRequest;
 
 @Component
 public class FilterUtility {
@@ -23,7 +25,14 @@ public class FilterUtility {
         return exchange.mutate().request(exchange.getRequest().mutate().header(name, value).build()).build();
     }
 
-    public ServerWebExchange setCorrelationId(ServerWebExchange exchange, String correlationId) {
-        return this.setRequestHeader(exchange, CORRELATION_ID, correlationId);
+    // public ServerWebExchange setCorrelationId(ServerWebExchange exchange, String correlationId) {
+    //     return this.setRequestHeader(exchange, CORRELATION_ID, correlationId);
+    // }
+
+    public ServerRequest setCorrelationId(ServerRequest request, String correlationId) {
+        ServerRequest requestWithCorrelationId = ServerRequest.from(request)
+            .header(CORRELATION_ID, correlationId)
+            .build();
+        return requestWithCorrelationId;
     }
 }

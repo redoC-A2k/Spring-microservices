@@ -29,13 +29,13 @@ spring:
     config:
         import: optional:configserver:http://localhost:8071  #optional -> start the microservice even if the configserver is down, configserver-> it will always be mentioned to indicate that this is url of config server even if the name of configserver was something else even then here configserver will be mentioned it is not releted to name of config server in any way, http://localhost:8071 -> url of the configserver 
 
-    cloud:
-        gateway:
-            discovery:
-                locator: 
-                    # enabled: true # to enable the discovery of services using eureka by gateway server and use the instances return by eureka server to forward the traffic to the respective services
-                    enabled: false # we don't want to use eureka to discover the services, we will use the routes defined in the gatewayServerApplication.java
-                    lower-case-service-id: true # to convert the service id to lower case
+    # cloud:
+    #     gateway:
+        #     discovery:
+        #         locator: 
+        #             # enabled: true # to enable the discovery of services using eureka by gateway server and use the instances return by eureka server to forward the traffic to the respective services
+        #             enabled: true # we don't want to use eureka to discover the services, we will use the routes defined in the gatewayServerApplication.java
+        #             lower-case-service-id: true # to convert the service id to lower case
 
 # Eureka config will be fetched from config server
 # eureka:
